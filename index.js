@@ -16,6 +16,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/get_info/:id", async (req, res) => {
+  console.log("go");
+
   try {
     const browser = await puppeteer.launch({
       headless: false,
@@ -35,9 +37,13 @@ app.get("/api/get_info/:id", async (req, res) => {
     });
 
     await browser.close();
-    const dat = JSON.parse(data);
+    console.log("close");
     res.send(JSON.parse(data));
-  } catch (err) {}
+  } catch (err) {
+    res.status(500);
+    console.log(err);
+    res.render("error", { error: err });
+  }
 });
 
 app.listen(8000, function () {
